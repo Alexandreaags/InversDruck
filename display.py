@@ -2,6 +2,7 @@
 
 import serial
 import time
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -10,7 +11,7 @@ az = []
 samples = 2000
 
 ### open a serial connection
-pico = serial.Serial("COM3", 115200)
+pico = serial.Serial("COM5", 115200)
 
 ### get Acceleration array
 for i in range(0,samples):
