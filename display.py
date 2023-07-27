@@ -2,29 +2,37 @@
 
 import serial
 import time
-
 import numpy as np
 import matplotlib.pyplot as plt
 
 az = []
 
-samples = 2000
+samples = 5000
+samples_array = []
 
 ### open a serial connection
-pico = serial.Serial("COM5", 115200)
+pico = serial.Serial("COM6", 115200)
+
+tempo_inicial = time.time()
 
 ### get Acceleration array
 for i in range(0,samples):
     inst_acc_z = str(pico.readline())
-    inst_acc_z = int(inst_acc_z[2:-3])
+    inst_acc_z = float(inst_acc_z[2:-6])
+    print(inst_acc_z)
     az.append(inst_acc_z)
+    samples_array.append(i)
+
+tempo_final = time.time()
 
 np_az = np.array(az)
 
-samples_array = [range(0, samples)]
 
-plt.plot(np_az, samples_array)
-plt.xlabel('Acceleretion on Z [g]')
-plt.ylabel('Samples')
+print(len(samples_array))
+print(5000/(tempo_final - tempo_inicial))
+
+plt.plot(samples_array, np_az)
+plt.xlabel('Samples')
+plt.ylabel('Acceleretion on Z [g]')
 
 plt.show()
