@@ -84,7 +84,7 @@ class MPU6050(object):
         # Can communicate with chip. Set it up.
         self.wake()                             # wake it up
         self.passthrough = True                 # Enable mag access from main I2C bus
-        self.accel_range = 1                    # default to highest sensitivity
+        self.accel_range = 0                    # default to highest sensitivity
         self.gyro_range = 0                     # Likewise for gyro
 
     # read from device

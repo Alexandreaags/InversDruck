@@ -8,7 +8,7 @@ p_down = Pin(17,Pin.OUT) # 1 for up / 0 for down
 i2c = I2C(0, sda=Pin(0), scl=Pin(1), freq=400000)
 imu = MPU6050(i2c)
 
-threshold = 0.10
+threshold = 0.04
 
 while True:
     #az = 0
@@ -26,5 +26,5 @@ while True:
         p_up.value(0)
         p_down.value(0)
 
-    #print("az",az, "g\t  ", p_up.value(), p_down.value(),"  ,end="\r")
+    print("az",az, "g\t  ", p_up.value(), p_down.value())
     

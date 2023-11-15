@@ -13,6 +13,20 @@ dac=MCP4725(i2c,BUS_ADDRESS[0])
 
 dac.write(0)
 
+step_1 = 50 #idle
+step_2 = 70 #idle
+step_3 = 80
+step_4 = 90
+step_5 = 100
+step_6 = 110
+step_7 = 120
+step_8 = 130
+step_9 = 90
+step_10 = 85
+step_11 = 90
+
+
+
 
 balanca.tare()
 # threshold = 0.10
@@ -21,44 +35,39 @@ while True:
     #az = 0
     #for i in range(50):
     balanca.measure_force()
-    # if balanca.force >= -1 and balanca.force <= 10:
-    #     dac.write(2048)  # goes down fast
-
-    # if balanca.force > 10 and balanca.force <= 20:
-    #     dac.write(1536)  # goes down slower
-
-    # if balanca.force > 20 and balanca.force <= 40:
-    #     dac.write(1024)  # goes down slow 
-
-
-    # if balanca.force > 40 and balanca.force <= 70:
-    #     dac.write(0) # idle
-
-    # if balanca.force > 70 and balanca.force <= 85:
-    #     dac.write(2400) # goes up slower
-
-    # if balanca.force > 85 and balanca.force <= 100:
-    #     dac.write(3248) # goes up slow
-
-
-    # if balanca.force > 100:
-    #     dac.write(4095)  # goes up fast
+   
     
-    if balanca.force <= 40:
-        dac.write(400)  # goes down fast
+    if balanca.force <= step_1:
+        output = 400
+        dac.write(output)  # goes down fast
 
-    if balanca.force > 40 and balanca.force <= 70:
-        dac.write(0) # idle
+    if balanca.force > step_1 and balanca.force <= step_2:
+        output = 0
+        dac.write(output) # idle
 
-    if balanca.force > 70 and balanca.force <= 85:
-        dac.write(1120) # goes up slower
+    if balanca.force > step_2 and balanca.force <= step_3:
+        output = 1120
+        dac.write(output) # goes up slower
 
-    if balanca.force > 85 and balanca.force <= 100:
-        dac.write(1330) # goes up slow
+    if balanca.force > step_3 and balanca.force <= step_4:
+        output = 1330
+        dac.write(output) # goes up slower
 
+    if balanca.force > step_4 and balanca.force <= step_5:
+        output = 1540
+        dac.write(output) # goes up slower
 
-    if balanca.force > 100:
-        dac.write(1540)  # goes up fast
+    if balanca.force > step_5 and balanca.force <= step_6:
+        output = 1750
+        dac.write(output) # goes up slower
+
+    if balanca.force > step_7 and balanca.force <= step_8:
+        output = 1960
+        dac.write(output) # goes up slow
+
+    if balanca.force > step_8:
+        output = 2070
+        dac.write(output)  # goes up fast
     
         # sleep(1.5)
         # dac.write(0)
@@ -67,4 +76,4 @@ while True:
     # az = az - 1.13 
     
 
-    print(balanca.force)
+    print(balanca.force, '  ', output)

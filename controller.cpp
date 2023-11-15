@@ -28,7 +28,7 @@ map S32 ActualPosition as input 0x6064:00
 
 
 #include "wrapper.h"
-#define MAXSPEED 50
+#define MAXSPEED 200
 
 //2. Step: call main function and set the speed and mode of operation
 
@@ -81,10 +81,8 @@ void user()
 						while ( (od_read(0x6041, 0x00) & 0xEF) != 0x27);   // wait until drive is in state "operation enabled"	
 						// checking the statusword (0x6041) for the bitmask: xxxx xxxx x01x 0111	
 				}
-			}
-		
-			
-		else if(In.Rasp >= 0 && In.Rasp <= 20) // Idle
+			}	
+		else if(In.Rasp >= 0 && In.Rasp <= 20) // Idle (0V)
 			{	
 			velocidade =  MAXSPEED * 0;
 
@@ -106,11 +104,10 @@ void user()
 						while ( (od_read(0x6041, 0x00) & 0xEF) != 0x27);   // wait until drive is in state "operation enabled"	
 						// checking the statusword (0x6041) for the bitmask: xxxx xxxx x01x 0111	
 				}
-			}
-			
+			}		
 		else if(In.Rasp >= 128 && In.Rasp <= 153) // Goes up slower
 			{	
-			velocidade =  MAXSPEED*0.25*-1;
+			velocidade =  MAXSPEED*0.16*-1;
 
 			Out.TargetVelocity = velocidade;
 
@@ -133,7 +130,7 @@ void user()
 			}
 		else if(In.Rasp >= 154 && In.Rasp <= 189) // Goes up slow
 			{	
-			velocidade =  MAXSPEED*0.5*-1;
+			velocidade =  MAXSPEED*0.32*-1;
 
 			Out.TargetVelocity = velocidade;
 
@@ -156,7 +153,7 @@ void user()
 			}
 		else if(In.Rasp >= 180 && In.Rasp <= 205) // Goes up fast
 			{	
-			velocidade =  MAXSPEED*-1;
+			velocidade =  MAXSPEED*0.48*-1;
 
 			Out.TargetVelocity = velocidade;
 
@@ -177,8 +174,75 @@ void user()
 						// checking the statusword (0x6041) for the bitmask: xxxx xxxx x01x 0111	
 				}
 			}
-		
-		   
+		else if(In.Rasp >= 210 && In.Rasp <= 225) // Goes up fast
+			{	
+			velocidade =  MAXSPEED*0.64*-1;
+
+			Out.TargetVelocity = velocidade;
+
+			if (bEnabled == false)		// motor is not running
+				{
+					bEnabled = true;		// then start the motor with...
+					Out.ControlWord = 0x7;	// switch to the "switched on" state
+					do 	{
+							yield();						// waiting for the next cycle (1ms)
+						}
+						while ( (od_read(0x6041, 0x00) & 0xEF) != 0x23);   // wait until drive is in state "switched on"	
+						// checking the statusword (0x6041) for the bitmask: xxxx xxxx x01x 0011				// waiting for the next cycle (1ms)
+					Out.ControlWord = 0xF;	// switch to the "enable operation" state and starts the velocity mode
+					do 	{
+							yield();						// waiting for the next cycle (1ms)
+						}
+						while ( (od_read(0x6041, 0x00) & 0xEF) != 0x27);   // wait until drive is in state "operation enabled"	
+						// checking the statusword (0x6041) for the bitmask: xxxx xxxx x01x 0111	
+				}
+			}
+		else if(In.Rasp >= 235 && In.Rasp <= 255) // Goes up fast
+			{	
+			velocidade =  MAXSPEED*0.80*-1;
+
+			Out.TargetVelocity = velocidade;
+
+			if (bEnabled == false)		// motor is not running
+				{
+					bEnabled = true;		// then start the motor with...
+					Out.ControlWord = 0x7;	// switch to the "switched on" state
+					do 	{
+							yield();						// waiting for the next cycle (1ms)
+						}
+						while ( (od_read(0x6041, 0x00) & 0xEF) != 0x23);   // wait until drive is in state "switched on"	
+						// checking the statusword (0x6041) for the bitmask: xxxx xxxx x01x 0011				// waiting for the next cycle (1ms)
+					Out.ControlWord = 0xF;	// switch to the "enable operation" state and starts the velocity mode
+					do 	{
+							yield();						// waiting for the next cycle (1ms)
+						}
+						while ( (od_read(0x6041, 0x00) & 0xEF) != 0x27);   // wait until drive is in state "operation enabled"	
+						// checking the statusword (0x6041) for the bitmask: xxxx xxxx x01x 0111	
+				}
+			}
+		else if(In.Rasp > 256) // Goes up fast
+			{	
+			velocidade =  MAXSPEED*-1;
+
+			Out.TargetVelocity = velocidade;
+
+			if (bEnabled == false)		// motor is not running
+				{
+					bEnabled = true;		// then start the motor with...
+					Out.ControlWord = 0x7;	// switch to the "switched on" state
+					do 	{
+							yield();						// waiting for the next cycle (1ms)
+						}
+						while ( (od_read(0x6041, 0x00) & 0xEF) != 0x23);   // wait until drive is in state "switched on"	
+						// checking the statusword (0x6041) for the bitmask: xxxx xxxx x01x 0011				// waiting for the next cycle (1ms)
+					Out.ControlWord = 0xF;	// switch to the "enable operation" state and starts the velocity mode
+					do 	{
+							yield();						// waiting for the next cycle (1ms)
+						}
+						while ( (od_read(0x6041, 0x00) & 0xEF) != 0x27);   // wait until drive is in state "operation enabled"	
+						// checking the statusword (0x6041) for the bitmask: xxxx xxxx x01x 0111	
+				}
+			}   
 		  
 		yield();						// waiting for the next cycle (1ms)
 	}	

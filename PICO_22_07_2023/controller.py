@@ -26,5 +26,5 @@ while True:
         p_up.value(0)
         p_down.value(0)
 
-    #print("az",az, "g\t  ", p_up.value(), p_down.value(),"  ,end="\r")
+    print("az",az, "g\t  ", p_up.value(), p_down.value(),)
     
